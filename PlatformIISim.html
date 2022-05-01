@@ -28,7 +28,7 @@
 				container.appendChild(spaceship);
 			};
 			
-			function loadPlatform(idNum, x, y) {
+			function loadPlatform(idNum, x, y){
 				var platform = document.createElementNS(svgns, 'image');
 				platform.setAttribute('href', 'https://blackgoldassyria.github.io/PlatformPlain.svg');
 				platform.setAttribute('height', 20);
@@ -60,9 +60,9 @@
 			platforms = [1,2];
 			spaceships = [3];
 			
-			createPlatform(1, 100, 500);
-			createPlatform(2, 650, 500);
-			createSpaceship(3, 100, 465, 0);
+			loadPlatform(1, 100, 500);
+			loadPlatform(2, 650, 500);
+			loadSpaceship(3, 100, 465, 0);
 			
 			const waitInterval = setInterval(animateWait, 21);
 			
