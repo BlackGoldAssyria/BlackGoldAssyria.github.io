@@ -50,7 +50,7 @@
 					var platformleft = platform.getBoundingClientRect()['left'],
 							platformright = platform.getBoundingClientRect()['right'],
 							platformtop = platform.getBoundingClientRect()['top'];
-					if ((right > platformleft || platformright > left) && (bottom + 5 > platformtop && bottom - 5 < platformtop)){
+					if ((lef > platformright || platformleft > right) && (bottom + 5 > platformtop && bottom - 5 < platformtop)){
 						return true;
 					};
 				};
@@ -113,6 +113,7 @@
 				spaceship.setAttribute('velocityY', velocityY);
 				spaceship.setAttribute('x', spaceshipX);
 				spaceship.setAttribute('y', spaceshipY);
+                                spaceship.setAttribute('theta',theta);
 				drawSpaceship(spaceshipId);
 			};
 
