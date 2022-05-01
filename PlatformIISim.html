@@ -33,8 +33,8 @@
 				platform.setAttribute('href', 'https://blackgoldassyria.github.io/PlatformPlain.svg');
 				platform.setAttribute('height', 20);
 				platform.setAttribute('width', 60);
-				platform.setAttribute('x', x - 30);
-				platform.setAttribute('y', y + 10);
+				platform.setAttribute('x', x);
+				platform.setAttribute('y', y);
 				platform.setAttribute('id', 'platform' + idNum);
 				container.appendChild(platform);
 			};
@@ -60,8 +60,8 @@
 			platforms = [1,2];
 			spaceships = [3];
 			
-			loadPlatform(1, 100, 500);
-			loadPlatform(2, 650, 500);
+			loadPlatform(1, 70, 510);
+			loadPlatform(2, 620, 510);
 			loadSpaceship(3, 100, 465, 0);
 			
 			var waitInterval = setInterval(animateWait, 21);
