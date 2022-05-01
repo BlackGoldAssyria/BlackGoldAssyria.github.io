@@ -50,7 +50,7 @@
 					var platformleft = platform.getBoundingClientRect()['left'],
 							platformright = platform.getBoundingClientRect()['right'],
 							platformtop = platform.getBoundingClientRect()['top'];
-					if ((left > platformright || platformleft > right) && (bottom + 5 > platformtop && bottom - 5 < platformtop)){
+					if ((left > platformright && platformleft > right) && (bottom + 5 > platformtop && bottom - 5 < platformtop)){
 						return true;
 					};
 				};
