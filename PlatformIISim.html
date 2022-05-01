@@ -18,7 +18,7 @@
 				spaceship.setAttribute('href','https://blackgoldassyria.github.io/SpacecraftPlain.svg');
 				spaceship.setAttribute('height',50);
 				spaceship.setAttribute('width',40);
-				spaceship.setAttribute('x', x);
+				spaceship.setAttribute('x', x - );
 				spaceship.setAttribute('y', y);
 				spaceship.setAttribute('velocityX', 0);
 				spaceship.setAttribute('velocityY', 0);
@@ -64,12 +64,12 @@
 			loadPlatform(2, 650, 500);
 			loadSpaceship(3, 100, 465, 0);
 			
-			const waitInterval = setInterval(animateWait, 21);
+			var waitInterval = setInterval(animateWait, 21);
 			
 			function animateWait(){
 				if (pressedKeys['Enter']){
 					clearInterval(waitInterval);
-					const animateInterval = setInterval(animate, 21);
+					var animateInterval = setInterval(animate, 21);
 				};
 			};
 			
