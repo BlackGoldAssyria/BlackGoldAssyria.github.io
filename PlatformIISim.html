@@ -75,10 +75,10 @@
 			
 			function drawSpaceship(idNum){
 				spaceship = document.getElementById('spaceship' + idNum);
-				x = spaceship.getAttribute('x');
-				y = spaceship.getAttribute('y');
+				x = Number(spaceship.getAttribute('x'));
+				y = Number(spaceship.getAttribute('y'));
 				theta = spaceship.getAttribute('theta');
-				spaceship.setAttribute('transform','rotate(' + Number(theta) + ' ' + Number(x) + 20 + ' ' + Number(y) + 50 + ')');
+				spaceship.setAttribute('transform','rotate(' + Number(theta) + ' ' + Number(x) + 10 + ' ' + Number(y) + 25 + ')');
 			};
 			
 			function animate(){
