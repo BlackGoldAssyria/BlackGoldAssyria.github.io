@@ -1,55 +1,29 @@
 <html>
-<head>
-<title>Gravitus: Spacecraft & Planet Simulation</title>
-</head>
-<body>
-<svg width = '750' height = '500' id='mainSVG'></svg>
-<script>
-var svgns = 'http://www.w3.org/2000/svg';
-var container = document.getElementById('mainSVG');
-var pressedKeys = {}
-window.onkeyup = function(e) { pressedKeys[e.key] = false; }
-window.onkeydown = function(e) { pressedKeys[e.key] = false; }
+	<head>
+		<title>Gravitus: Spacecraft & Planet Simulation</title>
+	</head>
+	<body>
+		<svg width = '750' height = '500' id='mainSVG'></svg>
+		<script>
+			var svgns = 'http://www.w3.org/2000/svg';
+			var container = document.getElementById('mainSVG');
+			var pressedKeys = {}
+			window.onkeyup = function(e) { pressedKeys[e.key] = false; }
+			window.onkeydown = function(e) { pressedKeys[e.key] = false; }
 
-var angleChangeValue = 0.005 * Math.PI * 2;
-
-function createSpaceship(idNum, x, y, theta) {
-    var spaceship = document.createElementNS(svgns, 'path');
-    spaceship.setAttribute('x', x);
-    spaceship.setAttribute('y', y);
-    spaceship.setAttribute('style', 'fill:lime; stroke:lime; stroke-width:1;');
-    spaceship.setAttribute('velocityX', 0);
-    spaceship.setAttribute('velocityY', 0);
-    spaceship.setAttribute('theta', theta)
-    var x1 = 0, y1 = -25, x2 = 20, y2 = 25, x3 = 0, y3 = 15, x4 = -20, y4 = 25;
-    var dy1 = x1 * Math.cos(theta) + y1 * Math.sin(theta) + y,
-	dx1 = y1 * Math.cos(theta) - x1 * Math.sin(theta) + x,
-        dy2 = x2 * Math.cos(theta) + y2 * Math.sin(theta) + y,
-	dx2 = y2 * Math.cos(theta) - x2 * Math.sin(theta) + x,
-        dy3 = x3 * Math.cos(theta) + y3 * Math.sin(theta) + y,
-	dx3 = y3 * Math.cos(theta) - x3 * Math.sin(theta) + x,
-        dy4 = x4 * Math.cos(theta) + y4 * Math.sin(theta) + y,
-	dx4 = y4 * Math.cos(theta) - x4 * Math.sin(theta) + x;
-    var d = 'M' + dx1 + ' ' + dy1 + ' L' + dx2 + ' ' + dy2
-	  + ' L' + dx3 + ' ' + dy3 + ' L' + dx4 + ' ' + dy4;
-    spaceship.setAttribute('d', d);
-    var bx1 = -25, by1 = -20, bx2 = 25, by2 = 20;
-    var dby1 = bx1 * Math.cos(theta) + by1 * Math.sin(theta) + y,
-	dbx1 = by1 * Math.cos(theta) - bx1 * Math.sin(theta) + x,
-        dby2 = bx2 * Math.cos(theta) + by2 * Math.sin(theta) + y,
-	dbx2 = by2 * Math.cos(theta) - bx2 * Math.sin(theta) + x;
-    spaceship.setAttribute('x1', dbx1);
-    spaceship.setAttribute('y1', dby1);
-    spaceship.setAttribute('x2', dbx2);
-    spaceship.setAttribute('y2', dby2);
-    spaceship.setAttribute('id', 'spaceship' + idNum);
-    container.appendChild(spaceship);
-};
-
-function createPlanet(idNum, x, y, r) {
-    var planet = document.createElementNS(svgns, 'circle');
-    planet.setAttributes #################################################################################
-##########################################################################################################
+			var angleChangeValue = 2
+			
+			function loadSpaceship(idNum, x, y, theta){
+				var spaceship = document.createElementNS(svgns, 'image');
+				spaceship.setAttribute('href','https://blackgoldassyria.github.io/SpacecraftPlain.svg');
+				spaceship.setAttribute('height',50);
+				spaceship.setAttribute('width',40);
+				spaceship.setAttribute('x', x);
+				spaceship.setAttribute('y', y);
+				spaceship.setAttribute('id', 'spaceship' + idNum);
+				spaceship.setAttribute('transform','rotate(' + Number(theta) + ' ' + Number(x) + ' ' + Number(y) + ')');
+				container.appendChild(spaceship);
+			};
 };
 
 </script>
