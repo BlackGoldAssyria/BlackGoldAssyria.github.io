@@ -78,7 +78,7 @@
 				x = Number(spaceship.getAttribute('x'));
 				y = Number(spaceship.getAttribute('y'));
 				theta = spaceship.getAttribute('theta');
-				spaceship.setAttribute('transform','rotate(' + Number(theta) + ' ' + Number(x) + 10 + ' ' + Number(y) + 25 + ')');
+				spaceship.setAttribute('transform','rotate(' + Number(theta) + ' ' + (Number(x) + 10) + ' ' + (Number(y) + 25) + ')');
 			};
 			
 			function animate(){
