@@ -7,11 +7,11 @@
 		<script>
 			var svgns = 'http://www.w3.org/2000/svg';
 			var container = document.getElementById('mainSVG');
-			var pressedKeys = {}
-			window.onkeyup = function(e) { pressedKeys[e.key] = false; }
-			window.onkeydown = function(e) { pressedKeys[e.key] = false; }
+			var pressedKeys = {};
+			window.onkeyup = function(e){pressedKeys[e.key] = false;};
+			window.onkeydown = function(e){pressedKeys[e.key] = false;};
 
-			var angleChangeValue = 2
+			var angleChangeValue = 2;
 			
 			function loadSpaceship(idNum, x, y, theta){
 				var spaceship = document.createElementNS(svgns, 'image');
@@ -20,13 +20,101 @@
 				spaceship.setAttribute('width',40);
 				spaceship.setAttribute('x', x);
 				spaceship.setAttribute('y', y);
+				spaceship.setAttribute('velocityX', 0);
+				spaceship.setAttribute('velocityY', 0);
+				spaceship.setAttribute('theta', theta);
 				spaceship.setAttribute('id', 'spaceship' + idNum);
 				spaceship.setAttribute('transform','rotate(' + Number(theta) + ' ' + Number(x) + ' ' + Number(y) + ')');
 				container.appendChild(spaceship);
 			};
 			
+			function loadPlatform(idNum, x, y) {
+				var platform = document.createElementNS(svgns, 'image');
+				platform.setAttribute('href', 'https://blackgoldassyria.github.io/PlatformPlain.svg');
+				platform.setAttribute('height', 20);
+				platform.setAttribute('width', 60);
+				platform.setAttribute('x', x);
+				platform.setAttribute('y', y);
+				platform.setAttribute('id', 'platform' + idNum);
+				container.appendChild(platform);
+			};
 			
-};
+			function checkSpaceshipOnPlatform(idNum){
+				spaceship = document.getElementById('spaceship' + idNum);
+				var left = spaceship.getBoundingClientRect()['left'];
+				var right = spaceship.getBoundingClientRect()['right'];
+				var bottom = spaceship.getBoundingClientRect()['bottom'];
+				for (var i = 0, len = platforms.length; i < len; i++){
+					platform = platforms[i];
+					platform = document.getElementById('platform' + platform);
+					var platformleft = platform.getBoundingClientRect()['left'],
+							platformright = platform.getBoundingClientRect()['right'],
+							platformtop = platform.getBoundingClientRect()['top'];
+					if ((right > platformleft || platformright > left) && (bottom + 5 > platformtop && bottom - 5 < platformtop)){
+						return true;
+					};
+				};
+				return false;
+			};
+			
+			platforms = [1,2];
+			spaceships = [3];
+			
+			createPlatform(1, 100, 500);
+			createPlatform(2, 650, 500);
+			createSpaceship(3, 100, 465, 0);
+			
+			const waitInterval = setInterval(animateWait, 21);
+			
+			function animateWait(){
+				if (pressedKeys['Enter']){
+					clearInterval(waitInterval);
+					const animateInterval = setInterval(animate, 21);
+				};
+			};
+			
+			function drawSpaceship(idNum){
+				spaceship = document.getElementById('spaceship' + idNum);
+				x = spaceship.getAttribute('x');
+				y = spaceship.getAttribute('y');
+				theta = spaceship.getAttribute('theta');
+				spaceship.setAttribute('transform','rotate(' + Number(theta) + ' ' + Number(x) + ' ' + Number(y) + ')');
+			};
+			
+			function animate(){
+				spaceshipId = spaceships[0];
+				spaceship = document.getElementById('spaceship' + spaceshipId);
+				var velocityX = Number(spaceship.getAttribute('velocityX'));
+				var velocityY = Number(spaceship.getAttribute('velocityY'));
+				var spaceshipX = Number(spaceship.getAttribute('x'));
+				var spaceshipY = Number(spaceship.getAttribute('y'));
+				var theta = Number(spaceship.getAttribute('theta'));
+				if (checkSpaceshipOnPlatforms(spaceshipId)){
+					velocityX = 0;
+					velocityY = -0.1;
+				} else {
+					velocityY += .125;
+					if (pressedKeys['ArrowLeft']){
+						theta -= angleChangeValue;
+					};
+					if (pressedKeys['ArrowRight']){
+						theta += angleChangeValue;
+					};
+				};
+				if (pressedKeys['ArrowUp']){
+					var accelY = .4 * Math.cos(theta / 90 * Math.PI / 2);
+					var accelX = .4 * Math.sin(theta / 90 * Math.PI / 2);
+					velocityY += accelY;
+					velocityX += accelX;
+				};
+				spaceshipX += velocityX;
+				spaceshipY += velocityY;
+				spaceship.setAttribute('velocityX', velocityX);
+				spaceship.setAttribute('velocityY', velocityY);
+				spaceship.setAttribute('x', spaceshipX);
+				spaceship.setAttribute('y', spaceshipY);
+				drawSpaceship(spaceshipId);
+			};
 
 </script>
 </body>
