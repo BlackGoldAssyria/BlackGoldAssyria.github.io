@@ -1,0 +1,178 @@
+<html>
+<head>
+<title>Gravitus: Spacecraft & Platform Simulation</title>
+</head>
+<body>
+<svg width='750' height='500' id='mainSVG'></svg>
+<script>
+var svgns = 'http://www.w3.org/2000/svg';
+var container = document.getElementById('mainSVG');
+var pressedKeys = {};
+var angleChangeValue = 0.005 * Math.PI * 2;
+
+window.onkeyup = function(e) { pressedKeys[e.key] = false; }
+window.onkeydown = function(e) { pressedKeys[e.key] = true; }
+
+function createPlatform(idNum, x, y){
+    var platform = document.createElementNS(svgns, 'polygon');
+    platform.setAttribute('x', x);
+    platform.setAttribute('y', y);
+    platform.setAttribute('x1', x - 30);
+    platform.setAttribute('y1', y - 10);
+    platform.setAttribute('x2', x + 30);
+    platform.setAttribute('y2', y + 10);
+    var points = (x - 30) + ',' + (y - 10) + ' ' + (x + 30) + ',' + (y - 10) + ' ' +
+		 (x + 25) + ',' + (y + 10) + ' ' + (x - 25) + ',' + (y + 10);
+    var style = 'fill: lime; stroke: lime; stroke-width: 1;';
+    platform.setAttribute('points', points);
+    platform.setAttribute('style', style);
+    platform.setAttribute('id', 'platform' + idNum);
+    container.appendChild(platform);
+};
+
+function createSpaceship(idNum, x, y){
+    var spaceship = document.createElementNS(svgns, 'path');
+    spaceship.setAttribute('x', x);
+    spaceship.setAttribute('y', y);
+    spaceship.setAttribute('style', 'fill:lime; stroke:lime; stroke-width:1;');
+    spaceship.setAttribute('velocityX', 0);
+    spaceship.setAttribute('velocityY', 0);
+    spaceship.setAttribute('theta',Math.PI / 2);
+    theta = spaceship.getAttribute('theta');
+    var x1 = 0, y1 = -25, x2 = 20, y2 = 25, x3 = 0, y3 = 15, x4 = -20, y4 = 25;
+    var dy1 = x1 * Math.cos(theta) + y1 * Math.sin(theta) + y,
+	dx1 = y1 * Math.cos(theta) + x1 * Math.sin(theta) + x,
+        dy2 = x2 * Math.cos(theta) + y2 * Math.sin(theta) + y,
+	dx2 = y2 * Math.cos(theta) + x2 * Math.sin(theta) + x,
+        dy3 = x3 * Math.cos(theta) + y3 * Math.sin(theta) + y,
+	dx3 = y3 * Math.cos(theta) + x3 * Math.sin(theta) + x,
+        dy4 = x4 * Math.cos(theta) + y4 * Math.sin(theta) + y,
+	dx4 = y4 * Math.cos(theta) + x4 * Math.sin(theta) + x;
+    var d = 'M' + dx1 + ' ' + dy1 + ' L' + dx2 + ' ' + dy2
+	  + ' L' + dx3 + ' ' + dy3 + ' L' + dx4 + ' ' + dy4;
+    spaceship.setAttribute('d', d);
+    var bx1 = -25, by1 = -20, bx2 = 25, by2 = 20;
+    var dby1 = bx1 * Math.cos(theta) + by1 * Math.sin(theta) + y,
+	dbx1 = by1 * Math.cos(theta) - bx1 * Math.sin(theta) + x,
+        dby2 = bx2 * Math.cos(theta) + by2 * Math.sin(theta) + y,
+	dbx2 = by2 * Math.cos(theta) - bx2 * Math.sin(theta) + x;
+    spaceship.setAttribute('x1', dbx1);
+    spaceship.setAttribute('y1', dby1);
+    spaceship.setAttribute('x2', dbx2);
+    spaceship.setAttribute('y2', dby2);
+    spaceship.setAttribute('id', 'spaceship' + idNum);
+    container.appendChild(spaceship);
+};
+
+createPlatform(1, 100, 500);
+createPlatform(2, 650, 500);
+createSpaceship(3, 100, 465);
+
+platforms = [1,2];
+spaceships = [3];
+
+function checkSpaceshipOnPlatforms(idNum){
+    spaceship = document.getElementById('spaceship' + idNum);
+    spaceshipX1 = Number(spaceship.getAttribute('x1'));
+    spaceshipY1 = Number(spaceship.getAttribute('y1'));
+    spaceshipX2 = Number(spaceship.getAttribute('x2'));
+    spaceshipY2 = Number(spaceship.getAttribute('y2'));
+    spaceshipVelocityX = Number(spaceship.getAttribute('velocityX'));
+    spaceshipVelocityY = Number(spaceship.getAttribute('velocityY'));
+    for (var i = 0, len = platforms.length; i < len; i++){
+        platform = platforms[i];
+        platform = document.getElementById('platform' + platform);
+	platformX1 = Number(platform.getAttribute('x1'));
+	platformX2 = Number(platform.getAttribute('x2'));
+	platformY1 = Number(platform.getAttribute('y1'));
+	if (platformX1 < spaceshipX2 && spaceshipX2 < platformX2 && platformY1 > spaceshipY2 && platformY1 < spaceshipY2 + 10){
+	    return true;
+	};
+    };
+    return false;
+};
+
+spaceship = document.getElementById('spaceship' + 3);
+
+const waitInterval = setInterval(animateWait, 21);
+
+function animateWait(){
+    if (pressedKeys['Enter']) {
+	clearInterval(waitInterval);
+	const animateInterval = setInterval(animate, 21);
+    };
+};
+
+function drawSpaceship(idNum,x,y){
+    spaceship = document.getElementById('spaceship' + idNum);
+    spaceship.setAttribute('x', x);
+    spaceship.setAttribute('y', y);
+    theta = spaceship.getAttribute('theta');
+    var x1 = 0, y1 = -25, x2 = 20, y2 = 25, x3 = 0, y3 = 15, x4 = -20, y4 = 25;
+    var dy1 = x1 * Math.cos(theta) + y1 * Math.sin(theta) + y,
+	dx1 = y1 * Math.cos(theta) - x1 * Math.sin(theta) + x,
+        dy2 = x2 * Math.cos(theta) + y2 * Math.sin(theta) + y,
+	dx2 = y2 * Math.cos(theta) - x2 * Math.sin(theta) + x,
+        dy3 = x3 * Math.cos(theta) + y3 * Math.sin(theta) + y,
+	dx3 = y3 * Math.cos(theta) - x3 * Math.sin(theta) + x,
+        dy4 = x4 * Math.cos(theta) + y4 * Math.sin(theta) + y,
+	dx4 = y4 * Math.cos(theta) - x4 * Math.sin(theta) + x;
+    var d = 'M' + dx1 + ' ' + dy1 + ' L' + dx2 + ' ' + dy2
+	  + ' L' + dx3 + ' ' + dy3 + ' L' + dx4 + ' ' + dy4;
+    spaceship.setAttribute('d', d);
+    var bx1 = -25, by1 = -20, bx2 = 25, by2 = 20;
+    var dby1 = bx1 * Math.cos(theta) + by1 * Math.sin(theta) + y,
+	dbx1 = by1 * Math.cos(theta) + bx1 * Math.sin(theta) + x,
+        dby2 = bx2 * Math.cos(theta) + by2 * Math.sin(theta) + y,
+	dbx2 = by2 * Math.cos(theta) + bx2 * Math.sin(theta) + x;
+    spaceship.setAttribute('x1', dbx1);
+    spaceship.setAttribute('y1', dby1);
+    spaceship.setAttribute('x2', dbx2);
+    spaceship.setAttribute('y2', dby2);
+    spaceship.setAttribute('style', 'fill:lime; stroke:lime; stroke-width:1;');
+    spaceship.setAttribute('id', 'spaceship' + idNum);
+    container.appendChild(spaceship);
+};
+
+function animate(){
+    spaceshipId = spaceships[0];
+    spaceship = document.getElementById('spaceship' + spaceshipId);
+    velocityX = Number(spaceship.getAttribute('velocityX'));
+    velocityY = Number(spaceship.getAttribute('velocityY'));
+    spaceshipX = Number(spaceship.getAttribute('x'));
+    spaceshipY = Number(spaceship.getAttribute('y'));
+    theta = Number(spaceship.getAttribute('theta'));
+    if (checkSpaceshipOnPlatforms(spaceshipId)){
+        velocityX = 0;
+	velocityY = -0.1;
+    } else {
+	velocityY += .125;
+        if (pressedKeys['ArrowLeft']) {
+	    velocityX -= .1;
+            theta -= angleChangeValue;
+        };
+        if (pressedKeys['ArrowRight']) {
+	    velocityX += .1;
+	    theta += angleChangeValue;
+        };
+    };
+    if (pressedKeys['ArrowUp']) {
+	velocityY -= .25;
+    };
+    if (theta <= Math.PI/4){
+	theta = Math.PI/4;
+    } else if (theta >= 3 * Math.PI / 4) {
+	theta = 3 * Math.PI / 4;
+    };
+    spaceshipX += velocityX;
+    spaceshipY += velocityY;
+    spaceship.setAttribute('velocityX',velocityX);
+    spaceship.setAttribute('velocityY',velocityY);
+    spaceship.setAttribute('theta',theta);
+    drawSpaceship(spaceshipId, spaceshipX, spaceshipY);
+};
+
+
+</script>
+</body>
+</html>
